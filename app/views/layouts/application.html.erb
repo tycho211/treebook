@@ -7,28 +7,20 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class="navbar-static-top">
-      <div class="navbar-inner">
-          <div class="container">
-              <a href="#" class="brand"> Treebook</a>
-              <ul class="nav">
-                <li class="active">
-                  <a href="#">Home</a>
-                  <div class="btn-group">
-                  <button class="btn">Left</button>
-                  <button class="btn">Middle</button>
-                  <button class="btn">Right</button>
-                  </div>
-                </li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-              </ul>
-            </div>
-           </div>
-          </div>
-
   <div class="container">
+  <div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Treebook</a>
+    <ul class="nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+    </ul>
+  </div>
+</div>
     <%= yield %>
   </div>
 </body>
 </html>
+
+
