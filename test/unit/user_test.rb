@@ -60,4 +60,8 @@ class UserTest < ActiveSupport::TestCase
     users(:cyprian).friends.reload
     assert users(:cyprian).friends.include?(users(:blaize))
   end
+
+  test "that calling to_param on a user returns the profile_name" do
+    assert_equal "pilotmac28", users(:cyprian).to_param
+  end
 end
