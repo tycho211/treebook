@@ -1,14 +1,14 @@
 require 'test_helper'
 
 class UserFriendshipsControllerTest < ActionController::TestCase
-    context "#index" do 
+  context "#index" do 
     context "when not logged in" do
       should "redirect to the login page" do
         get :index
         assert_response :redirect
       end
     end
-end
+  end
 
   context "#new" do 
     context "when not logged in" do
