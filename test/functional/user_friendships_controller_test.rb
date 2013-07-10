@@ -1,13 +1,22 @@
 require 'test_helper'
 
 class UserFriendshipsControllerTest < ActionController::TestCase
- context "#new" do 
-  context "when not logged in" do
-    should "redirect to the login page" do
-      get :new
-      assert_response :redirect
+    context "#index" do 
+    context "when not logged in" do
+      should "redirect to the login page" do
+        get :index
+        assert_response :redirect
+      end
     end
-  end
+end
+
+  context "#new" do 
+    context "when not logged in" do
+      should "redirect to the login page" do
+        get :new
+        assert_response :redirect
+      end
+    end
 
   context "when logged in" do
     setup do
@@ -50,9 +59,9 @@ class UserFriendshipsControllerTest < ActionController::TestCase
    end
 
    should "ask if you really want to friend the user" do
-   get :new, friend_id: users(:blaize)
-   assert_match /Do you really want to friend #{users(:blaize).full_name}?/, response.body
-   end
+    get :new, friend_id: users(:blaize)
+    assert_match /Do you really want to friend #{users(:blaize).full_name}?/, response.body
+    end
   end
 end    
 
@@ -101,7 +110,7 @@ end
         end
 
         should "create a friendship" do
-          assert users(:cyprian).friends.include?(users(:blaize))
+          assert users(:cyprian).pending_friends.include?(users(:blaize))
         end
 
         should "redirect to the profile page of the friend" do
