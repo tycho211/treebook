@@ -128,9 +128,17 @@ end
         end
       end
 
+      context "successfully" do
+        should "create two user friendship objects" do
+          assert_difference 'UserFriendship.count', 2 do
+            post :create, user_friendship: { friend_id: users(:blaize).profile_name }
+          end
+        end
+      end
+
       context "with a valid friend_id" do
         setup do
-          post :create, user_friendship: { friend_id: users(:blaize) }
+          post :create, user_friendship: { friend_id: users(:blaize).profile_name }
         end
 
         should "assign a friend object" do
@@ -140,8 +148,8 @@ end
 
         should "assign a user_friendship object" do
           assert assigns(:user_friendship)
-          assert_equal users(:cyprian), assigns(:user_friendship).user
-          assert_equal users(:blaize), assigns(:user_friendship).friend
+          assert_equal users(:blaize), assigns(:user_friendship).user
+          assert_equal users(:cyprian), assigns(:user_friendship).friend
         end
 
         should "create a friendship" do
@@ -155,7 +163,7 @@ end
 
         should "set the flash success message" do
           assert flash[:success]
-          assert_equal "You are now friends with #{users(:blaize).full_name}", flash[:success]
+          assert_equal "Friend request sent.", flash[:success]
         end
       end
     end
@@ -172,7 +180,9 @@ end
 
     context "when logged in" do
       setup do
-        @user_friendship = create(:pending_user_friendship, user: users(:cyprian))
+        @friend = create(:user)
+        @user_friendship = create(:pending_user_friendship, user: users(:cyprian), friend: @friend)
+        create(:pending_user_friendship, friend: users(:cyprian), user: @friend)
         sign_in users(:cyprian)
         put :accept, id: @user_friendship
         @user_friendship.reload
@@ -222,4 +232,39 @@ end
       end
     end
   end
+
+  context "#destroy" do
+    context "when not logged in" do
+      should "redirect to the login page" do
+        delete :destroy, id: 1
+        assert_response :redirect
+        assert_redirected_to login_path
+      end
+    end
+
+    context "when logged in" do
+      setup do
+        @friend = create(:user)
+        @user_friendship = create(:accepted_user_friendship, friend: @friend, user: users(:cyprian))
+        create(:accepted_user_friendship, friend: users(:cyprian), user: @friend)
+
+        sign_in users(:cyprian)
+    end
+
+      should "delete user friendships" do
+        assert_difference 'UserFriendship.count', -2 do
+          delete :destroy, id: @user_friendship
+        end
+      end
+
+      should "set the flash" do
+        delete :destroy, id: @user_friendship
+        assert_equal "Friendship ended", flash[:success]
+      end
+    end
+  end
+
+
 end
+
+
