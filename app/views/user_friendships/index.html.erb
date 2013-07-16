@@ -17,7 +17,7 @@
           <em>Friendship requested.</em> <%= link_to "Accept Friendship",edit_user_friendship_path(friendship) %>.
         <% end %>
         <% if friendship.accepted? %>
-        <em>Friendship started <%= friendship.updated_at %>.</em> <%= link_to "Update friendship", edit_user_friendship_path(friendship) %>.
+        <em>Your friendship with <%= link_to friend.full_name =%> was last updated <%= time_ago_in_words(friendship.updated_at) %> ago.</em> <%= link_to "Update friendship", edit_user_friendship_path(friendship) %>.
         <% end %>
     </div>
   </div>
