@@ -39,7 +39,7 @@ class UserFriendshipsControllerTest < ActionController::TestCase
 
       should "display date information on an accepted friendship" do
         assert_select "#user_friendship_#{@friendship2.id}" do
-          assert_select "em", "Friendship started #{@friendship2.updated_at}."
+          assert_select "em", "Your friendship with Active Friend was last updated less than a minute ago."
         end
       end
     end
@@ -215,11 +215,10 @@ end
       setup do
         @user_friendship = create(:pending_user_friendship, user: users(:cyprian))
         sign_in users(:cyprian)
-        get :edit, id: @user_friendship
+        get :edit, id: @user_friendship.friend.profile_name
       end
 
       should "get edit and return success" do
-        get :edit, id: @user_friendship
         assert_response :success
       end
 
